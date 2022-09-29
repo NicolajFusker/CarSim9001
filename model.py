@@ -4,7 +4,13 @@ class Car(object):
     pass
 
 class Wheel(object):
-    pass
+    def __init__(self):
+        self.oriantation = randint(0, 359)
+
+    def rotate(self, revolutions):
+        degreesOfRotation = 360 * revolutions
+        self.oriantation = (degreesOfRotation + self.oriantation) % 360
+
 
 class Engine(object):
     pass
