@@ -1,18 +1,36 @@
 from random import randint
 
 class Car(object):
-    pass
+    def __init__(self):
+        self.theEngine = Engine()
+
+    def updateModel(self, dt):
+        self.theEngine.updateModel(dt)
 
 class Wheel(object):
     def __init__(self):
-        self.oriantation = randint(0, 359)
+        self.orientation = randint(0, 359)
 
     def rotate(self, revolutions):
         degreesOfRotation = 360 * revolutions
-        self.oriantation = (degreesOfRotation + self.oriantation) % 360
+        self.orientation = (degreesOfRotation + self.orientation) % 360
 
 class Engine(object):
-    pass
+    def __init__(self):
+        self.throttlePosition = 0
+        self.theGearbox = Gearbox()
+        self.currentRpm = 0
+        self.consumptionConstant = 0.0025
+        self.maxRpm = 100
+        self.theTank = Tank()
+
+    def updateModel(self, dt):
+        if self.theTank.contents > 0:
+            self.currentRpm = self.throttlePosition * self.maxRpm
+            self.theTank.remove(self.currentRpm * self.consumptionConstant)
+            self.theGearbox.rotate(self.currentRpm * (dt/60))
+        else:
+            self.currentRpm = 0
 
 class Gearbox(object):
     def __init__(self):
